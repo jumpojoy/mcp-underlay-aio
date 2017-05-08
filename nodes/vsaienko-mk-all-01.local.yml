@@ -1,0 +1,139 @@
+#include:
+#  - cluster.virtual-mcp11-ironic-underlay.openstack
+#  - service.ironic.api
+#  - service.ironic.conductor
+classes:
+#  - cluster.virtual-mcp11-ironic-underlay.openstack.proxy
+#  - cluster.virtual-mcp11-ovs.openstack.control
+#  - cluster.virtual-mcp11-contrail.infra.config
+#  - cluster.virtual-mcp11-ironic-underlay.openstack
+  - system.linux.system.repo.mcp.openstack
+  - service.linux.system
+
+  - system.mysql.client.database.keystone
+  - system.mysql.client.database.neutron
+
+
+  - system.keystone.client.service.keystone
+  - system.keystone.client.service.neutron
+  - service.mysql.server.single
+
+  - system.memcached.server.single
+  - system.keystone.server.single
+  - system.keystone.server.wsgi
+  - service.rabbitmq.server.cluster
+  - system.rabbitmq.server.vhost.openstack
+##  - service.linux.system
+##  - service.git.client
+  - system.ironic.common.single #  - service.ironic.common
+  - system.ironic.keystone.single
+  - system.ironic.neutron.single
+  - system.ironic.tftpd_hpa.single #  - service.tftpd_hpa.server.single
+
+  - service.ironic.api.single #  - service.ironic.api.single
+  - service.ironic.conductor.single #
+  - cluster.virtual-mcp-ironic-underlay.openstack
+parameters:
+  _param:
+    linux_system_codename: xenial
+    reclass_data_revision: master
+    interface_mtu: 1450
+    mgmt_address: 192.168.0.10
+    mgmt_netmask: 255.255.255.0
+    primary_interface: lo0
+    single_address: 10.14.0.83
+    openstack_database_address: 10.14.0.83
+    rabbitmq_cluster_role: master
+  mysql:
+    enabled: true
+    server:
+      enabled: true
+      version: '5.6'
+      bind:
+        address: ${_param:cluster_local_address}
+    client:
+      enabled: true
+      server:
+        database:
+          admin:
+            encoding: utf8
+            host: localhost
+            password: ${_param:mysql_admin_password}
+            port: 3306
+            user: ${_param:mysql_admin_user}
+  keystone:
+    server:
+      enabled: true
+      database:
+        host: ${_param:cluster_vip_address}
+      message_queue:
+        engine: rabbitmq
+        host: ${_param:rabbitmq_address}
+        port: 5672
+        user: openstack
+        password: ${_param:rabbitmq_openstack_password}
+        virtual_host: '/openstack'
+        ha_queues: true
+    client:
+      enabled: true
+      server:
+        identity:
+          admin:
+            host: ${_param:keystone_service_host}
+            port: 35357
+            token: ${_param:keystone_service_token}
+          roles:
+          - admin
+          - Member
+          project:
+            service:
+              description: "OpenStack Service tenant"
+            admin:
+              description: "OpenStack Admin tenant"
+              user:
+                admin:
+                  is_admin: true
+                  password: ${_param:keystone_admin_password}
+                  email: ${_param:admin_email}
+        admin_identity:
+          admin:
+            user: admin
+            password: workshop
+            project: admin
+            host: ${_param:keystone_service_host}
+            port: 5000
+            region_name: ${_param:openstack_region}
+  ironic:
+    api:
+      bind:
+        address: ${_param:cluster_vip_address}
+  linux:
+    system:
+      name: vsaienko-mk-all-01
+      domain: local
+      enabled: true
+    network:
+      fqdn: ${linux:system:name}.${linux:system:domain}
+      enabled: true
+      interface:
+#        bridge: openvswitch
+        dhcp_int:
+          enabled: true
+          name: ens3
+          proto: dhcp
+          type: eth
+          mtu: ${_param:interface_mtu}
+        lo0:
+          enabled: true
+          proto: dhcp
+          type: eth
+          mtu: ${_param:interface_mtu}
+        br-mgmt:
+          enabled: true
+          type: bridge
+          proto: static
+          address: ${_param:mgmt_address}
+          netmask: ${_param:mgmt_netmask}
+          mtu: ${_param:interface_mtu}
+          use_interfaces:
+            - ${_param:primary_interface}

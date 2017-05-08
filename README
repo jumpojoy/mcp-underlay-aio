@@ -1,0 +1,23 @@
+export LC_ALL=C
+export RECLASS_SYSTEM_BRANCH=refs/changes/28/4428/3
+export SALT_FORMULAS_IRONIC_BRANCH=refs/changes/05/4105/11
+export SALT_FORMULAS_NEUTRON_BRANCH=refs/changes/01/4401/5
+
+
+git clone https://github.com/jumpojoy/mcp-underlay-aio /root/mcp-underlay-aio
+
+bash /root/mcp-underlay-aio/scripts/aio-setup.sh
+
+salt-call saltutil.sync_all
+salt-call saltutil.refresh_pillar
+
+salt 'vsaienko-mk-all-01.local' state.apply linux
+salt 'vsaienko-mk-all-01.local' state.apply memcached
+salt 'vsaienko-mk-all-01.local' state.apply rabbitmq
+salt 'vsaienko-mk-all-01.local' state.apply mysql
+
+salt 'vsaienko-mk-all-01.local' state.apply keystone
+salt 'vsaienko-mk-all-01.local' state.apply apache
+salt 'vsaienko-mk-all-01.local' state.apply neutron
+salt 'vsaienko-mk-all-01.local' state.apply ironic
+salt 'vsaienko-mk-all-01.local' state.apply tftpd_hpa
