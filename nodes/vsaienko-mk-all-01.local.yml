@@ -1,48 +1,16 @@
-#include:
-#  - cluster.virtual-mcp11-ironic-underlay.openstack
-#  - service.ironic.api
-#  - service.ironic.conductor
 classes:
-#  - cluster.virtual-mcp11-ironic-underlay.openstack.proxy
-#  - cluster.virtual-mcp11-ovs.openstack.control
-#  - cluster.virtual-mcp11-contrail.infra.config
-#  - cluster.virtual-mcp11-ironic-underlay.openstack
-  - system.linux.system.repo.mcp.openstack
-  - service.linux.system
-
-  - system.mysql.client.database.keystone
-  - system.mysql.client.database.neutron
-
-
-  - system.keystone.client.service.keystone
-  - system.keystone.client.service.neutron
-  - service.mysql.server.single
-
-  - system.memcached.server.single
-  - system.keystone.server.single
-  - system.keystone.server.wsgi
-  - service.rabbitmq.server.cluster
-  - system.rabbitmq.server.vhost.openstack
-##  - service.linux.system
-##  - service.git.client
-  - system.ironic.common.single #  - service.ironic.common
-  - system.ironic.keystone.single
-  - system.ironic.neutron.single
-  - system.ironic.tftpd_hpa.single #  - service.tftpd_hpa.server.single
-
-  - service.ironic.api.single #  - service.ironic.api.single
-  - service.ironic.conductor.single #
-  - cluster.virtual-mcp-ironic-underlay.openstack
+  - cluster.virtual-mcp-ironic-underlay
 parameters:
   _param:
+    salt_master_host: 127.0.0.1
     linux_system_codename: xenial
     reclass_data_revision: master
     interface_mtu: 1450
     mgmt_address: 192.168.0.10
     mgmt_netmask: 255.255.255.0
     primary_interface: lo0
-    single_address: 10.14.0.83
-    openstack_database_address: 10.14.0.83
+    single_address: 10.14.0.66
+    openstack_database_address: 10.14.0.66
     rabbitmq_cluster_role: master
   mysql:
     enabled: true
@@ -109,7 +77,7 @@ parameters:
         address: ${_param:cluster_vip_address}
   linux:
     system:
-      name: vsaienko-mk-all-01
+      name: vsaienko-mk-all-02
       domain: local
       enabled: true
     network:

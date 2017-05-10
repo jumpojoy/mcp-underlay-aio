@@ -1,0 +1,6 @@
+classes:
+  - system.linux.system.single
+  - service.mysql.server.single
+  - system.memcached.server.single
+  - service.rabbitmq.server.single
+  - cluster.virtual-mcp-ironic-underlay.openstack
