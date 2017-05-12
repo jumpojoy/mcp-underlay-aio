@@ -78,14 +78,14 @@ parameters:
         address: ${_param:cluster_vip_address}
   linux:
     system:
-      name: vsaienko-mk-all-02
+      name: vsaienko-mk-all-01
       domain: local
       enabled: true
     network:
       fqdn: ${linux:system:name}.${linux:system:domain}
       enabled: true
+      bridge: openvswitch
       interface:
-#        bridge: openvswitch
         dhcp_int:
           enabled: true
           name: ens3
@@ -106,3 +106,6 @@ parameters:
           mtu: ${_param:interface_mtu}
           use_interfaces:
             - ${_param:primary_interface}
+        br-floating:
+          enabled: true
+          type: ovs_bridge
