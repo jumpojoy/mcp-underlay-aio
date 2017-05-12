@@ -70,3 +70,6 @@ git clone https://github.com/jumpojoy/salt-formula-baremetal-simulator ${FORMULA
 cd ${FORMULAS_PATH}/baremetal_simulator
 make install
 cd -
+
+salt-call saltutil.sync_all
+salt-call saltutil.refresh_pillar

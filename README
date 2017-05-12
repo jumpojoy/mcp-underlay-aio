@@ -8,9 +8,6 @@ git clone https://github.com/jumpojoy/mcp-underlay-aio /root/mcp-underlay-aio
 
 bash /root/mcp-underlay-aio/scripts/aio-setup.sh
 
-salt-call saltutil.sync_all
-salt-call saltutil.refresh_pillar
-
 salt 'vsaienko-mk-all-01.local' state.apply salt
 salt 'vsaienko-mk-all-01.local' state.apply linux
 #salt 'vsaienko-mk-all-01.local' state.apply ntp,openssh
