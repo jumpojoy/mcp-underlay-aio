@@ -1,4 +1,5 @@
 classes:
+  - service.baremetal_simulator.simulator
   - cluster.virtual-mcp-ironic-underlay
 parameters:
   _param:

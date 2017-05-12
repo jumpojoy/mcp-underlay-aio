@@ -24,3 +24,5 @@ salt 'vsaienko-mk-all-01.local' state.apply apache
 salt 'vsaienko-mk-all-01.local' state.apply neutron
 salt 'vsaienko-mk-all-01.local' state.apply ironic
 salt 'vsaienko-mk-all-01.local' state.apply tftpd_hpa
+
+salt 'vsaienko-mk-all-01.local' state.apply baremetal_simulator

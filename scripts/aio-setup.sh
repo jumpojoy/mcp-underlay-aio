@@ -65,3 +65,8 @@ for formula_service in "${formula_services[@]}"; do
   make install
   cd -
 done
+
+git clone https://github.com/jumpojoy/salt-formula-baremetal-simulator ${FORMULAS_PATH}/baremetal_simulator
+cd ${FORMULAS_PATH}/baremetal_simulator
+make install
+cd -
