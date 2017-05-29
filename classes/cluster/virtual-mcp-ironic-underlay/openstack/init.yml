@@ -15,6 +15,7 @@ classes:
   - service.neutron.gateway.single
   - system.neutron.client.service.ironic
 
+  - system.ironic.apache
   - system.ironic.common
   - system.ironic.tftpd_hpa
 
