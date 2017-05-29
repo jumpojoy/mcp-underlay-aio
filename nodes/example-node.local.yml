@@ -10,8 +10,8 @@ parameters:
     mgmt_address: 192.168.0.10
     mgmt_netmask: 255.255.255.0
     primary_interface: lo0
-    single_address: 10.14.0.66
-    openstack_database_address: 10.14.0.66
+    single_address: 10.14.0.226
+    openstack_database_address: ${_param:single_address}
     rabbitmq_cluster_role: master
   mysql:
     enabled: true
@@ -78,7 +78,7 @@ parameters:
         address: ${_param:cluster_vip_address}
   linux:
     system:
-      name: vsaienko-mk-all-01
+      name: example-node
       domain: local
       enabled: true
     network:

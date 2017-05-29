@@ -1,35 +1,39 @@
 export LC_ALL=C
-export RECLASS_SYSTEM_BRANCH=refs/changes/28/4428/3
-export SALT_FORMULAS_IRONIC_BRANCH=refs/changes/05/4105/14
+export RECLASS_SYSTEM_BRANCH=refs/changes/28/4428/9
+export SALT_FORMULAS_IRONIC_BRANCH=refs/changes/05/4105/23
 export SALT_FORMULAS_NEUTRON_BRANCH=refs/changes/01/4401/6
-
+export HOSTNAME=$(hostname).local
+export MY_IP=$(ip route get 4.2.2.1 | awk '/via/ {print $7}')
 
 git clone https://github.com/jumpojoy/mcp-underlay-aio /root/mcp-underlay-aio
 
 bash /root/mcp-underlay-aio/scripts/aio-setup.sh
 
-salt 'vsaienko-mk-all-01.local' state.apply salt
+cp /srv/salt/reclass/nodes/example-node.local.yml /srv/salt/reclass/nodes/$HOSTNAME.yml
+sed -i s/example-node/$(hostname)/ /srv/salt/reclass/nodes/$HOSTNAME.yml
+sed -i s/#MY_IP/$MY_IP/ /srv/salt/reclass/nodes/$HOSTNAME.yml
+
+salt "$HOSTNAME" state.apply salt
 salt-call saltutil.refresh_pillar
 
+salt "$HOSTNAME" state.apply linux
+#salt "$HOSTNAME" state.apply ntp,openssh
 
-salt 'vsaienko-mk-all-01.local' state.apply linux
-#salt 'vsaienko-mk-all-01.local' state.apply ntp,openssh
+salt "$HOSTNAME" state.apply memcached
+salt "$HOSTNAME" state.apply rabbitmq
+salt "$HOSTNAME" state.apply mysql
 
-salt 'vsaienko-mk-all-01.local' state.apply memcached
-salt 'vsaienko-mk-all-01.local' state.apply rabbitmq
-salt 'vsaienko-mk-all-01.local' state.apply mysql
+salt "$HOSTNAME" state.apply keystone
+salt "$HOSTNAME" state.apply apache
+salt "$HOSTNAME" state.apply neutron
+salt "$HOSTNAME" state.apply ironic
+salt "$HOSTNAME" state.apply tftpd_hpa
 
-salt 'vsaienko-mk-all-01.local' state.apply keystone
-salt 'vsaienko-mk-all-01.local' state.apply apache
-salt 'vsaienko-mk-all-01.local' state.apply neutron
-salt 'vsaienko-mk-all-01.local' state.apply ironic
-salt 'vsaienko-mk-all-01.local' state.apply tftpd_hpa
-
-salt 'vsaienko-mk-all-01.local' state.apply baremetal_simulator
+salt "$HOSTNAME" state.apply baremetal_simulator
 
 source /root/keystonercv3
 openstack baremetal node list
-local_ip=$(hostname --ip-address)
+local_ip=$(ip route get 4.2.2.1 | awk '/via/ {print $7}')
 cirros_md5=$(md5sum /var/www/httproot/cirros-0.3.5-x86_64-disk.img | awk '{print $1}')
 port_id=$(openstack baremetal port list --node n1 -f value -c UUID)
 port_address=$(openstack baremetal port list --node n1 -f value -c Address)
