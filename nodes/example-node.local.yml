@@ -9,7 +9,6 @@ parameters:
     interface_mtu: 1450
     mgmt_address: 192.168.0.10
     mgmt_netmask: 255.255.255.0
-    primary_interface: lo0
     single_address: #MY_IP
     openstack_database_address: ${_param:single_address}
     rabbitmq_cluster_role: master
@@ -92,20 +91,6 @@ parameters:
           proto: dhcp
           type: eth
           mtu: ${_param:interface_mtu}
-        lo0:
-          enabled: true
-          proto: dhcp
-          type: eth
-          mtu: ${_param:interface_mtu}
-        br-mgmt:
-          enabled: true
-          type: bridge
-          proto: static
-          address: ${_param:mgmt_address}
-          netmask: ${_param:mgmt_netmask}
-          mtu: ${_param:interface_mtu}
-          use_interfaces:
-            - ${_param:primary_interface}
         br-floating:
           enabled: true
           type: ovs_bridge

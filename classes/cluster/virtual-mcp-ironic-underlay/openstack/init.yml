@@ -16,7 +16,6 @@ classes:
   - system.neutron.client.service.ironic
 
   - system.ironic.apache
-  - system.ironic.common
   - system.ironic.tftpd_hpa
 
   - system.ironic.api.single
@@ -79,6 +78,9 @@ parameters:
         engine: ml2
         tenant_network_types: 'flat,vlan'
         tenant_vlan_range: '100:200'
+        mechanism:
+          ovs:
+            driver: openvswitch
     gateway:
       agent_mode: ${_param:neutron_gateway_agent_mode}
       backend:
