@@ -102,5 +102,5 @@ parameters:
           type: ovs_port
           bridge: br-baremetal
           proto: static
-          address: 192.168.90.2
+          address: 192.168.90.1
           netmask: 255.255.255.0
