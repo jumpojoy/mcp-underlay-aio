@@ -94,3 +94,13 @@ parameters:
         br-floating:
           enabled: true
           type: ovs_bridge
+        br-baremetal:
+          enabled: true
+          type: ovs_bridge
+        phy-baremetal:
+          enabled: true
+          type: ovs_port
+          bridge: br-baremetal
+          proto: static
+          address: 192.168.90.2
+          netmask: 255.255.255.0
