@@ -1,5 +1,4 @@
 export LC_ALL=C
-export RECLASS_SYSTEM_BRANCH=refs/changes/86/5986/5
 export SALT_FORMULAS_IRONIC_BRANCH=refs/changes/09/6109/5
 export HOSTNAME=$(hostname).local
 export MY_IP=$(ip route get 4.2.2.1 | awk '/via/ {print $7}')
