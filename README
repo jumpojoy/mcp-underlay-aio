@@ -19,7 +19,7 @@ salt --timeout 30 "$HOSTNAME" state.apply linux,ntp
 
 salt --timeout 30 "$HOSTNAME" state.apply salt && salt --timeout 30 "$HOSTNAME" state.apply salt
 
-salt --timeout 30"$HOSTNAME" state.apply memcached
+salt --timeout 30 "$HOSTNAME" state.apply memcached
 salt --timeout 30 "$HOSTNAME" state.apply rabbitmq
 salt --timeout 30 "$HOSTNAME" state.apply mysql
 
