@@ -1,3 +1,34 @@
+# git update using reference as a branch.
+# git_update_branch ref
+function git_update_branch {
+    local git_branch=$1
+
+    git checkout -f origin/$git_branch
+    # a local branch might not exist
+    git branch -D $git_branch || true
+    git checkout -b $git_branch
+}
+
+# git update using reference as a branch.
+# git_update_remote_branch ref
+function git_update_remote_branch {
+    local git_branch=$1
+
+    git checkout -b $git_branch -t origin/$git_branch
+}
+
+# git update using reference as a tag. Be careful editing source at that repo
+# as working copy will be in a detached mode
+# git_update_tag ref
+function git_update_tag {
+    local git_tag=$1
+
+    git tag -d $git_tag
+    # fetching given tag only
+    git_timed fetch origin tag $git_tag
+    git checkout -f $git_tag
+}
+
 function git_clone {
     local git_remote=$1
     local git_dest=$2
