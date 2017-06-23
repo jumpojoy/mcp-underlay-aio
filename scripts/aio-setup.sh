@@ -11,6 +11,8 @@ RECLASS_SYSTEM_BRANCH=${RECLASS_SYSTEM_BRANCH:-master}
 SALT_FORMULAS_DEFAULT_BRANCH=${SALT_FORMULAS_DEFAULT_BRANCH:-master}
 SALT_FORMULAS_IRONIC_BRANCH=${SALT_FORMULAS_IRONIC_BRANCH:-$SALT_FORMULAS_DEFAULT_BRANCH}
 
+apt install -y software-properties-common
+
 wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
 add-apt-repository http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest
 apt update
