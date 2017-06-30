@@ -56,6 +56,8 @@ parameters:
         br-pxe:
           enabled: true
           type: bridge
-          proto: manual
+          proto: static
+          address: 192.168.90.5
+          netmask: 255.255.255.0
           use_interfaces:
             - ${_param:pxe_interface}

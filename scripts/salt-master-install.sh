@@ -14,6 +14,8 @@ RECLASS_SYSTEM_BRANCH=${RECLASS_SYSTEM_BRANCH:-master}
 SALT_FORMULAS_DEFAULT_BRANCH=${SALT_FORMULAS_DEFAULT_BRANCH:-master}
 SALT_FORMULAS_IRONIC_BRANCH=${SALT_FORMULAS_IRONIC_BRANCH:-$SALT_FORMULAS_DEFAULT_BRANCH}
 
+SALT_CLUSTER_MODEL=${SALT_CLUSTER_MODEL:-https://github.com/jumpojoy/mcp-underlay-aio}
+
 apt install -y software-properties-common
 
 wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
@@ -67,7 +69,7 @@ systemctl restart salt-minion
 systemctl enable salt-api
 systemct restart salt-api
 
-git clone https://github.com/jumpojoy/mcp-underlay-aio /srv/salt/reclass
+git clone $SALT_CLUSTER_MODEL /srv/salt/reclass
 cd /srv/salt/reclass
 git_clone https://gerrit.mcp.mirantis.net/p/salt-models/reclass-system.git /srv/salt/reclass/classes/system $RECLASS_SYSTEM_BRANCH
 ln -s /usr/share/salt-formulas/reclass/service classes/service
