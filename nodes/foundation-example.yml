@@ -12,7 +12,7 @@ parameters:
     interface_mtu: 1450
   linux:
     system:
-      name: #MY_HOSTNMAE
+      name: #MY_HOSTNAME
       domain: #MY_DOMAIN
       enabled: true
     network:
@@ -22,3 +22,5 @@ parameters:
         br-pxe:
           enabled: true
           type: bridge
+          use_interfaces:
+            - ${_param:pxe_interface}
