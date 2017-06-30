@@ -1,0 +1,24 @@
+classes:
+  - system.linux.system.repo.mcp.salt
+  - system.linux.system.repo.saltstack.xenial
+  - system.linux.system.repo.ubuntu
+  - system.openssh.client.lab
+  - system.salt.control.virt
+parameters:
+  _param:
+    pxe_interface: #MY_PXE_INTERFACE
+    single_address: #MY_IP
+    linux_system_codename: xenial
+    interface_mtu: 1450
+  linux:
+    system:
+      name: #MY_HOSTNMAE
+      domain: #MY_DOMAIN
+      enabled: true
+    network:
+      fqdn: ${linux:system:name}.${linux:system:domain}
+      enabled: true
+      interface:
+        br-pxe:
+          enabled: true
+          type: bridge
