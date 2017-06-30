@@ -1,17 +1,22 @@
+applications:
+  - salt
 classes:
+  - system.linux.system.single
   - system.linux.system.repo.mcp.salt
   - system.linux.system.repo.saltstack.xenial
   - system.linux.system.repo.ubuntu
-  - system.openssh.client.lab
   - system.salt.control.virt
 parameters:
   _param:
     pxe_interface: #MY_PXE_INTERFACE
     single_address: #MY_IP
+    salt_master_host: ${_param:single_address}
     linux_system_codename: xenial
     interface_mtu: 1450
     salt_foundation_xenial_image: http://apt-mk.mirantis.com/images/ubuntu-16-04-x64-mcp1.0.qcow2
   salt:
+    minion:
+      enabled: false
     control:
       enabled: true
       size:
@@ -19,7 +24,7 @@ parameters:
           cpu: 6
           ram: 8192
           disk_profile: large
-          net_profile: default
+          net_profile: foundation
       cluster:
         internal:
           domain: #MY_DOMAIN
@@ -35,7 +40,7 @@ parameters:
               size: foundation_vms
   virt:
     nic:
-      default:
+      foundation:
         eth0:
           bridge: br-pxe
           model: virtio
@@ -51,5 +56,6 @@ parameters:
         br-pxe:
           enabled: true
           type: bridge
+          proto: manual
           use_interfaces:
             - ${_param:pxe_interface}

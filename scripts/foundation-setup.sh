@@ -5,7 +5,7 @@ RUN_DIR=$(cd $(dirname "$0") && pwd)
 FORMULAS_BASE=https://gerrit.mcp.mirantis.net/salt-formulas
 FORMULAS_PATH=/root/formulas
 
-./$RUN_DIR/salt-master-install.sh
+/$RUN_DIR/salt-master-install.sh
 
 DOMAIN=local
 HOSTNAME=$(hostname)

@@ -6,7 +6,7 @@ source $RUN_DIR/functions
 
 FORMULAS_BASE=${FORMULAS_BASE:-https://gerrit.mcp.mirantis.net/salt-formulas}
 FORMULAS_PATH=${FORMULAS_PATH:-/root/formulas}
-FORMULAS_SERVICES=${FORMULAS_SERVICES:-"linux"reclass salt openssh ntp git sensu heka sphinx mysql libvirt rsyslog memcached rabbitmq apache keystone neutron ironic tftpd-hpa"}
+FORMULAS_SERVICES=${FORMULAS_SERVICES:-"linux reclass salt openssh ntp git sensu heka sphinx mysql libvirt rsyslog memcached rabbitmq apache keystone neutron ironic tftpd-hpa"}
 
 SALT_API_LINUX_USER=${SALT_API_LINUX_USER:-stack}
 
