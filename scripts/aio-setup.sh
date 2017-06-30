@@ -7,6 +7,8 @@ source $RUN_DIR/functions
 FORMULAS_BASE=${FORMULAS_BASE:-https://gerrit.mcp.mirantis.net/salt-formulas}
 FORMULAS_PATH=${FORMULAS_PATH:-/root/formulas}
 
+SALT_API_LINUX_USER=${SALT_API_LINUX_USER:-stack}
+
 RECLASS_SYSTEM_BRANCH=${RECLASS_SYSTEM_BRANCH:-master}
 SALT_FORMULAS_DEFAULT_BRANCH=${SALT_FORMULAS_DEFAULT_BRANCH:-master}
 SALT_FORMULAS_IRONIC_BRANCH=${SALT_FORMULAS_IRONIC_BRANCH:-$SALT_FORMULAS_DEFAULT_BRANCH}
@@ -17,6 +19,8 @@ wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG
 add-apt-repository http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest
 apt update
 apt install -y salt-master salt-minion reclass make
+
+apt install ansible=2.1.1.0-1~ubuntu16.04.1
 
 rm /etc/salt/minion_id
 rm -f /etc/salt/pki/minion/minion_master.pub
@@ -37,6 +41,18 @@ ext_pillar:
   - reclass: *reclass
 master_tops:
   reclass: *reclass
+EOF
+
+cat <<-EOF > /etc/salt/master.d/api.conf
+external_auth:
+  pam:
+    $SALT_API_LINUX_USER:
+      - .*
+
+rest_cherrypy:
+  port: 8000
+  debug: True
+  disable_ssl: True
 EOF
 
 [ ! -d /etc/reclass ] && mkdir /etc/reclass

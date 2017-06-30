@@ -29,6 +29,17 @@ parameters:
             password: ${_param:mysql_admin_password}
             port: 3306
             user: ${_param:mysql_admin_user}
+  ironic:
+    deploy:
+      enabled: true
+      nodes:
+        admin_identity:
+          - name: n0
+            deployment_profile: infra
+          - name: n1
+            deployment_profile: infra
+          - name: n2
+            deployment_profile: infra
   keystone:
     server:
       enabled: true
