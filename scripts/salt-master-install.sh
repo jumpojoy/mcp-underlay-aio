@@ -4,6 +4,8 @@ RUN_DIR=$(cd $(dirname "$0") && pwd)
 
 source $RUN_DIR/functions
 
+DOMAIN=${DOMAIN:-local}
+
 FORMULAS_BASE=${FORMULAS_BASE:-https://gerrit.mcp.mirantis.net/salt-formulas}
 FORMULAS_PATH=${FORMULAS_PATH:-/root/formulas}
 FORMULAS_SERVICES=${FORMULAS_SERVICES:-"linux reclass salt openssh ntp git sensu heka sphinx mysql libvirt rsyslog memcached rabbitmq apache keystone neutron ironic tftpd-hpa"}
@@ -25,7 +27,7 @@ apt install -y salt-master salt-minion salt-api reclass make
 
 rm /etc/salt/minion_id
 rm -f /etc/salt/pki/minion/minion_master.pub
-echo "id: $(hostname).local" > /etc/salt/minion
+echo "id: $(hostname).$DOMAIN" > /etc/salt/minion
 echo "master: localhost" >> /etc/salt/minion
 
 [ ! -d /etc/salt/master.d ] && mkdir -p /etc/salt/master.d
