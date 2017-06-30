@@ -1,15 +1,10 @@
 export LC_ALL=C
 export SALT_FORMULAS_IRONIC_BRANCH=refs/changes/09/6109/6
 export HOSTNAME=$(hostname).local
-export MY_IP=$(ip route get 4.2.2.1 | awk '/via/ {print $7}')
 
 git clone https://github.com/jumpojoy/mcp-underlay-aio /root/mcp-underlay-aio
 
 bash /root/mcp-underlay-aio/scripts/aio-setup.sh
-
-cp /srv/salt/reclass/nodes/example-node.local.yml /srv/salt/reclass/nodes/$HOSTNAME.yml
-sed -i s/example-node/$(hostname)/ /srv/salt/reclass/nodes/$HOSTNAME.yml
-sed -i s/#MY_IP/$MY_IP/ /srv/salt/reclass/nodes/$HOSTNAME.yml
 
 salt --timeout 30  "$HOSTNAME" saltutil.refresh_pillar
 salt --timeout 30  "$HOSTNAME" saltutil.sync_all

@@ -4,6 +4,9 @@ RUN_DIR=$(cd $(dirname "$0") && pwd)
 
 source $RUN_DIR/functions
 
+HOSTNAME=$(hostname).local
+MY_IP=$(ip route get 4.2.2.1 | awk '/via/ {print $7}')
+
 FORMULAS_BASE=${FORMULAS_BASE:-https://gerrit.mcp.mirantis.net/salt-formulas}
 FORMULAS_PATH=${FORMULAS_PATH:-/root/formulas}
 
@@ -72,6 +75,10 @@ git clone https://github.com/jumpojoy/mcp-underlay-aio /srv/salt/reclass
 cd /srv/salt/reclass
 git_clone https://gerrit.mcp.mirantis.net/p/salt-models/reclass-system.git /srv/salt/reclass/classes/system $RECLASS_SYSTEM_BRANCH
 ln -s /usr/share/salt-formulas/reclass/service classes/service
+
+cp /srv/salt/reclass/nodes/example-node.local.yml /srv/salt/reclass/nodes/$HOSTNAME.yml
+sed -i s/example-node/$(hostname)/ /srv/salt/reclass/nodes/$HOSTNAME.yml
+sed -i s/#MY_IP/$MY_IP/ /srv/salt/reclass/nodes/$HOSTNAME.yml
 
 mkdir -p ${FORMULAS_PATH}
 declare -a formula_services=("linux" "reclass" "salt" "openssh" "ntp" "git" "sensu" "heka" "sphinx" "mysql" "libvirt" "rsyslog" "memcached" "rabbitmq" "apache" "keystone" "neutron" "ironic" "tftpd-hpa")
