@@ -63,8 +63,10 @@ output: yaml
 inventory_base_uri: /srv/salt/reclass
 EOF
 
-service salt-master restart
-service salt-minion restart
+systemctl restart  salt-master
+systemctl restart salt-minion
+systemctl enable salt-api
+systemct restart salt-api
 
 git clone https://github.com/jumpojoy/mcp-underlay-aio /srv/salt/reclass
 cd /srv/salt/reclass
