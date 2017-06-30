@@ -20,7 +20,7 @@ add-apt-repository http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest
 apt update
 apt install -y salt-master salt-minion reclass make
 
-apt install ansible=2.1.1.0-1~ubuntu16.04.1
+apt install -y ansible=2.1.1.0-1~ubuntu16.04.1
 
 rm /etc/salt/minion_id
 rm -f /etc/salt/pki/minion/minion_master.pub
